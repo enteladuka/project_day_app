@@ -11,7 +11,7 @@ class User < ApplicationRecord #Inherits from ApplicationRecord/ApplicationRecor
   validates :email, presence: true , length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REJEX },
                     uniqueness: { case_sensitive: false } #rails infers uniquess should be true
-  validates :password, presence: true, length: { minimum: 8 }
+  validates :password, presence: true, length: { minimum: 8 }, allow_nil: true
 
   # For uniqueness validation can also use validates_uniqueness_of :username, :email ?
   has_secure_password
@@ -21,5 +21,5 @@ class User < ApplicationRecord #Inherits from ApplicationRecord/ApplicationRecor
                                                   BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
   end
-  
+
 end
