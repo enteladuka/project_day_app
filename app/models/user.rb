@@ -13,8 +13,13 @@ class User < ApplicationRecord #Inherits from ApplicationRecord/ApplicationRecor
                     uniqueness: { case_sensitive: false } #rails infers uniquess should be true
   validates :password, presence: true, length: { minimum: 8 }
 
-
   # For uniqueness validation can also use validates_uniqueness_of :username, :email ?
-
   has_secure_password
+
+  def User.digest(string)
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
+                                                  BCrypt::Engine.cost
+    BCrypt::Password.create(string, cost: cost)
+  end
+  
 end
