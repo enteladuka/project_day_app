@@ -54,6 +54,22 @@ class UserTest < ActiveSupport::TestCase
     assert_not duplicate_user.valid? #succeeds on nil or false
   end
 
+  test "username validation should accept valid usernames" do
+    valid_usernames = %w[username USerN4M3 User_name username12]
+    valid_usernames.each do |valid_username|
+      @user.username = valid_username
+        assert @user.valid?, "#{valid_username.inspect} should be valid" #.inspect is the same thing as .to_s (converts to string)
+    end
+  end
+
+  test "username validation should reject invalid usernames" do
+    invalid_usernames = %w[entel@ averyveryveryverylongusername]
+    invalid_usernames.each do |invalid_username|
+      @user.email = invalid_username
+      assert_not @user.valid?, "#{invalid_username.inspect} should be invalid"
+    end
+  end
+
   test "username should be unique" do
     duplicate_user = @user.dup
     @user.save
