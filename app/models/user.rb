@@ -1,7 +1,8 @@
 class User < ApplicationRecord #Inherits from ApplicationRecord/ApplicationRecord inherits from ActiveRecord::Base
-  attr_accessor :remember_token
+  attr_accessor :remember_token, :activation_token, :reset_token
   before_save { self.email = email.downcase } #self is the current user
   before_save { self.username = username.downcase }
+  before_create :create_activation_digest
   VALID_USERNAME_REJEX = /\A[a-z0-9_]{4,30}\z/i
   validates :username, presence: true, length: { maximum: 30 }, #do not need length validation here but included anyway
                        format: { with: VALID_USERNAME_REJEX },
@@ -32,13 +33,45 @@ class User < ApplicationRecord #Inherits from ApplicationRecord/ApplicationRecor
     update_attribute(:remember_digest, User.digest(remember_token))
   end
 
-  def authenticated?(remember_token) #returns true if the given token matches the digest
-    return false if remember_digest.nil?
-    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  def authenticated?(attribute, token) #returns true if the given token matches the digest
+    digest = send("#{attribute}_digest")
+    return false if digest.nil?
+    BCrypt::Password.new(digest).is_password?(token)
+    #debugger
   end
 
   def forget #forgets the user
     update_attribute(:remember_digest, nil)
+  end
+
+  def activate #activates an account
+    update_attribute(:activated, true)
+    update_attribute(:activated_at, Time.zone.now)
+  end
+
+  def send_activation_email #sends activation email
+    UserMailer.account_activation(self).deliver_now
+  end
+
+  def create_reset_digest #sets password reset attributes
+    self.reset_token = User.new_token
+    update_attribute(:reset_digest,  User.digest(reset_token))
+    update_attribute(:reset_sent_at, Time.zone.now)
+  end
+
+  def send_password_reset_email
+    UserMailer.password_reset(self).deliver_now
+  end
+
+  def password_reset_expired? #returns true if password expired
+    reset_sent_at < 2.hours.ago
+  end
+
+  private
+
+  def create_activation_digest #creates and assigns the activation token and digest
+    self.activation_token = User.new_token
+    self.activation_digest = User.digest(activation_token)
   end
 
 end

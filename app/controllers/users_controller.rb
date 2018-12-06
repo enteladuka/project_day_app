@@ -2,12 +2,13 @@ class UsersController < ApplicationController
 before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
 
   def index
-    @users = User.all
+    @users = User.where(activated: true)
   end
 
   def show
     @user = User.find(params[:id]) # how does params retrieve the user ID exactly?
-    #debugger use CTRL+D to exit debugger if needed
+    ##debugger use CTRL+D to exit #debugger if needed
+    #add something to only show if the user is active
   end
 
   def new
@@ -17,9 +18,13 @@ before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
   def create
     @user = User.new(user_params)
     if @user.save
+      @user.send_activation_email
+      flash[:info] = "Please check your email to activate your account."
       #log_in @user
+      #redirect_to root_url
       redirect_to login_path
     else
+      flash[:info] = "something went wrong"
       render 'new'
     end
   end
