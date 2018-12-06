@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+
+  resources :task_entries
+  resources :tasks
+  resources :projects
+  resources :customers
   get 'password_resets/new'
 
   get 'password_resets/edit'

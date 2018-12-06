@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  note: MyString
+  duration: 1
+  task: one
+
+two:
+  note: MyString
+  duration: 1
+  task: two
