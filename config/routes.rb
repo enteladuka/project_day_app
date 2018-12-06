@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :task_entries
-  resources :tasks
-  resources :projects
-  resources :customers
   get 'password_resets/new'
 
   get 'password_resets/edit'
@@ -21,4 +17,8 @@ Rails.application.routes.draw do
   resources :users #index, show, new, edit, crete, update, destroy
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :edit, :update]
+  resources :task_entries
+  resources :tasks
+  resources :projects
+  resources :customers
 end
