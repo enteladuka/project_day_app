@@ -1,7 +1,16 @@
-<p>Forgot password</p>
+<div class="container">
+<br>
+<h3>Forgot password</h3>
+<div>
 <%= form_for(:password_reset, url: password_resets_path) do |f| %>
+  <div class="field">
       <%= f.label :email %>
-      <%= f.email_field :email %>
-
+      <%= f.email_field(:email, {:class => 'form-control', :placeholder => 'Enter Email'})%>
+  </div><br/>
+  <div class="actions">
       <%= f.submit "Submit", class: "btn btn-primary" %>
+  </div>
 <% end %>
+<br>
+<p>Email address not found? <%= link_to "Sign up", signup_path %></p>
+</div>

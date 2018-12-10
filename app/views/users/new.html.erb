@@ -1,19 +1,38 @@
-<p> Sign up form </p>
+<h3>Sign Up</h3>
+<div>
+<% if @user.errors.any? %>
+  <div id = "error_explanation">
+        <% @user.errors.full_messages.each do |msg| %>
+        <div class = "alert alert-danger">
+            <%= msg %>
+        </div>
+        <% end %>
+  </div>
+<% end %>
+</div>
 
+<div>
 <%= form_for(@user, url: signup_path) do |f| %>
+  <div class="field">
+    <%= f.label :username %><br/>
+    <%= f.text_field(:username, {:class => 'form-control', :placeholder => 'Enter Username'}) %>
+  </div>
 
-  <%= f.label :username %>
-  <%= f.text_field :username %>
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.email_field(:email, {:class => 'form-control', :placeholder => 'Enter Email'}) %>
+  </div>
 
-  <%= f.label :email %>
-  <%= f.email_field :email %>
+  <div class ="field">
+    <%= f.label :password %>
+    <%= f.password_field(:password, {:class => 'form-control', :placeholder => 'Enter Password'}) %>
+  </div>
 
-  <%= f.label :password %>
-  <%= f.password_field :password %>
+  <div class ="field">
+    <%= f.label :password_confirmation %>
+    <%= f.password_field(:password_confirmation, {:class => 'form-control', :placeholder => 'Confirm Password'}) %>
+  </div><br>
 
-  <%= f.label :password_confirmation %>
-  <%= f.password_field :password_confirmation %>
-
+  <div class="actions">
   <%= f.submit "Sign Up", class: "btn btn-primary" %>
-
 <% end %>
