@@ -18,6 +18,9 @@ class User < ApplicationRecord #Inherits from ApplicationRecord/ApplicationRecor
   # For uniqueness validation can also use validates_uniqueness_of :username, :email ?
   has_secure_password
 
+
+  has_many :tasks
+
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                   BCrypt::Engine.cost

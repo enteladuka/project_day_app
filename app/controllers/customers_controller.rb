@@ -17,35 +17,34 @@ class CustomersController < ApplicationController
 
   def create
     @customer = Customer.new(customer_params)
-
-    respond_to do |format|
       if @customer.save
-        format.html { redirect_to @customer, notice: 'Customer was successfully created.' }
+        redirect_to @customer
+        flash[:notice]= 'Customer was successfully created.'
       else
-        format.html { render :new }
+        render 'new'
       end
     end
   end
 
   def update
-    respond_to do |format|
       if @customer.update(customer_params)
-        format.html { redirect_to @customer, notice: 'Customer was successfully updated.' }
+        redirect_to @customer
+        flash[:notice] = 'Customer was successfully updated.'
       else
-        format.html { render :edit }
+        render 'edit'
       end
     end
   end
 
   def destroy
     @customer.destroy
-    respond_to do |format|
-      format.html { redirect_to customers_url, notice: 'Customer was successfully destroyed.' }
+    redirect_to customers_url
+    flash[:notice] = 'Customer was successfully destroyed.'
     end
   end
 
   private
-  
+
     def set_customer
       @customer = Customer.find(params[:id])
     end

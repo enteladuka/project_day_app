@@ -1,5 +1,7 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :find_user, only: [:create, :show, :edit, :update, :destroy]
+  before_action :find_project, only: [:create, :show, :edit, :update, :destroy]
 
   def index
     @tasks = Task.all
@@ -16,42 +18,44 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
-
-    respond_to do |format|
+    @task = @project.tasks.create(task_params)
       if @task.save
-        format.html { redirect_to @task, notice: 'Task was successfully created.' }
+        flash[:success] = "Task successfully created"
+        redirect_to @task
       else
-        format.html { render :new }
+        render 'new'
       end
-    end
   end
 
   def update
-    respond_to do |format|
       if @task.update(task_params)
-        format.html { redirect_to @task, notice: 'Task was successfully updated.' }
+        redirect_to @task
+        flash[:notice] = 'Task was successfully updated.'
       else
-        format.html { render :edit }
+        render 'edit'
       end
-    end
   end
-
 
   def destroy
     @task.destroy
-    respond_to do |format|
-      format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }
+      flash[:notice] = 'Task was successfully destroyed.'
+      redirect_to tasks_url
     end
   end
 
   private
 
+    def set_user
+      @user = current_user
+    end
+    def find_project
+      @project = Project.find(params[:project_id])
+    end
     def set_task
       @task = Task.find(params[:id])
     end
-
     def task_params
-      params.require(:task).permit(:task_name, :project_id, :user_id)
+      params.require(:task).permit(:task_name)
     end
+
 end

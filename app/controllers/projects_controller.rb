@@ -1,5 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_customer, only: [:create, :edit, :update, :destroy]
 
   def index
     @projects = Project.all
@@ -16,40 +17,44 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = Project.new(project_params)
-
-    respond_to do |format|
+    @project = @customer.projects.create(project_params)
       if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
+        flash[:notice] = 'Project was successfully created.'
+        redirect_to project_path(@project)
       else
-        format.html { render :new }
+         render 'new'
       end
     end
   end
 
   def update
-    respond_to do |format|
       if @project.update(project_params)
-        format.html { redirect_to @project, notice: 'Project was successfully updated.' }
+        flash[:notice] = 'Project was successfully updated'
+        redirect_to project_path(@project)
       else
-        format.html { render :edit }
+        render 'edit'
       end
     end
   end
 
   def destroy
     @project.destroy
-    respond_to do |format|
-      format.html { redirect_to projects_url, notice: 'Project was successfully destroyed.' }
+    flash[:notice] = 'Project was successfully destroyed'
+    redirect_to projects_path
     end
   end
 
   private
+
+    def set_customer
+      @customer = Customer.find(params[:id])
+    end
+
     def set_project
       @project = Project.find(params[:id])
     end
 
     def project_params
-      params.require(:project).permit(:project_name, :customer_id)
+      params.require(:project).permit(:project_name)
     end
 end
