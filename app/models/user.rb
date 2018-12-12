@@ -1,46 +1,57 @@
-class User < ApplicationRecord #Inherits from ApplicationRecord/ApplicationRecord inherits from ActiveRecord::Base
+class User < ApplicationRecord
+
   attr_accessor :remember_token, :activation_token, :reset_token
-  before_save { self.email = email.downcase } #self is the current user
-  before_save { self.username = username.downcase }
-  before_create :create_activation_digest
-  VALID_USERNAME_REJEX = /\A[a-z0-9_]{4,30}\z/i
-  validates :username, presence: true, length: { maximum: 30 }, #do not need length validation here but included anyway
-                       format: { with: VALID_USERNAME_REJEX },
-                       uniqueness: { case_sensitive: false }
-                       #validates the presence of username attribute ( .blank? -> generates error ["Name can't be blank"] )
 
-  VALID_EMAIL_REJEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
-  validates :email, presence: true , length: { maximum: 255 },
-                    format: { with: VALID_EMAIL_REJEX },
-                    uniqueness: { case_sensitive: false } #rails infers uniquess should be true
-  validates :password, presence: true, length: { minimum: 8 }, allow_nil: true
-
-  # For uniqueness validation can also use validates_uniqueness_of :username, :email ?
   has_secure_password
-
 
   has_many :tasks
 
-  def User.digest(string)
+  VALID_USERNAME_REGEX = /\A\w\z/i
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+
+  before_save { self.email = email.downcase }
+  before_save { self.username = username.downcase }
+
+  before_create :create_activation_digest
+
+  enum role: [:admin, :standard]
+
+  after_initialize do
+    if self.new_record?
+      self.role ||= :standard
+    end
+  end
+
+  validates :username, presence: true, length: { in: 4..30 },
+                       format: { with: VALID_USERNAME_REGEX },
+                       uniqueness: { case_sensitive: false }
+
+  validates :email, presence: true , length: { maximum: 255 },
+                    format: { with: VALID_EMAIL_REGEX },
+                    uniqueness: { case_sensitive: false }
+
+  validates :password, presence: true, length: { minimum: 8 }, allow_nil: true
+
+
+  def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                   BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
   end
 
-  def User.new_token #returns a random token
+  def new_token
     SecureRandom.urlsafe_base64
   end
 
-  def remember #remembers a user in the database for use in persistent sessions
-    self.remember_token = User.new_token
+  def remember
+    self.remember_token = new_token
     update_attribute(:remember_digest, User.digest(remember_token))
   end
 
-  def authenticated?(attribute, token) #returns true if the given token matches the digest
+  def authenticated?(attribute, token)
     digest = send("#{attribute}_digest")
     return false if digest.nil?
     BCrypt::Password.new(digest).is_password?(token)
-    #debugger
   end
 
   def forget #forgets the user

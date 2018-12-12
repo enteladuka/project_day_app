@@ -2,14 +2,14 @@
 <div>
 <% if @user.errors.any? %>
   <div id = "error_explanation">
-        <% @user.errors.full_messages.each do |msg| %>
-        <div class = "alert alert-danger">
-            <%= msg %>
-        </div>
-        <% end %>
+    <% @user.errors.full_messages.each do |msg| %>
+    <div class = "alert alert-danger">
+        <%= msg %>
+    </div>
+    <% end %>
   </div>
 <% end %>
-</div>
+
 
 <div>
 <%= form_for(@user, url: signup_path) do |f| %>

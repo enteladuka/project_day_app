@@ -29,9 +29,14 @@
     <%= f.password_field(:password, {:class => 'form-control', :placeholder => 'Enter Password'}) %>
   </div>
 
-  <div class ="field">
+  <div class = "field">
     <%= f.label :password_confirmation %>
     <%= f.password_field(:password_confirmation, {:class => 'form-control', :placeholder => 'Confirm Password'}) %>
+  </div><br>
+
+  <div class="field">
+    <%= f.label :Admin %>
+    <%= f.check_box :role, {:type => 'checkbox'}, "standard", "admin" %>
   </div><br>
 
   <div class="actions">

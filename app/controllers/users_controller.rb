@@ -50,7 +50,7 @@ before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
   private
 
     def user_params
-      params.require(:user).permit(:username, :email, :password, :password_confirmation)
+      params.require(:user).permit(:username, :email, :password, :password_confirmation, :role)
     end
 
     def logged_in_user
