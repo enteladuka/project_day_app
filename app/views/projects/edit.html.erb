@@ -1,6 +1,14 @@
-<h1>Editing Project</h1>
+<h1>Edit Project</h1>
 
-<%= render 'form', project: @project %>
+<%= form_for([@customer, @project], url: customer_project_path([@customer, @project]), html: {class: "edit_customer_project", id: "edit_customer_project", method: :patch}) do |f| %>
 
-<%= link_to 'Show', @project %> |
-<%= link_to 'Back', projects_path %>
+  <div class="field">
+    <%= f.label :project_name %>
+    <%= f.text_field(:project_name, {:class => 'form-control', :placeholder => 'Enter Project Name'}) %>
+  </div><br>
+
+  <div class="actions">
+    <%= f.submit "Save", class: "btn btn-primary" %>
+  </div>
+
+<% end %>

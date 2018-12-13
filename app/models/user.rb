@@ -6,10 +6,10 @@ class User < ApplicationRecord
 
   has_many :tasks
 
-  VALID_USERNAME_REGEX = /\A\w\z/i
+  #VALID_USERNAME_REGEX = /\A\w\z/i # Proof: http://rubular.com/r/WplaODtchP.
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 
-  before_save { self.email = email.downcase }
+  before_save { self.email = email.downcase } # self is the current user
   before_save { self.username = username.downcase }
 
   before_create :create_activation_digest
@@ -23,7 +23,7 @@ class User < ApplicationRecord
   end
 
   validates :username, presence: true, length: { in: 4..30 },
-                       format: { with: VALID_USERNAME_REGEX },
+                       #format: { with: VALID_USERNAME_REGEX },
                        uniqueness: { case_sensitive: false }
 
   validates :email, presence: true , length: { maximum: 255 },
@@ -32,6 +32,10 @@ class User < ApplicationRecord
 
   validates :password, presence: true, length: { minimum: 8 }, allow_nil: true
 
+
+  # def downcase_attributes(attrs = [])
+  #   attrs.each(&:downcase)
+  # end
 
   def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
@@ -68,7 +72,7 @@ class User < ApplicationRecord
   end
 
   def create_reset_digest #sets password reset attributes
-    self.reset_token = User.new_token
+    self.reset_token = new_token
     update_attribute(:reset_digest,  User.digest(reset_token))
     update_attribute(:reset_sent_at, Time.zone.now)
   end
@@ -84,7 +88,7 @@ class User < ApplicationRecord
   private
 
   def create_activation_digest #creates and assigns the activation token and digest
-    self.activation_token = User.new_token
+    self.activation_token = new_token
     self.activation_digest = User.digest(activation_token)
   end
 

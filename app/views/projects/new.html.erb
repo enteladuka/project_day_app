@@ -1,5 +1,14 @@
-<h1>New Project</h1>
+<h1>New Customer Project</h1>
 
-<%= render 'form', project: @project %>
+<%= form_for(@project, url: customer_projects_path, html: {class: "new_customer_project", id: "new_customer_project"}) do |f| %>
 
-<%= link_to 'Back', projects_path %>
+  <div class="field">
+    <%= f.label :project_name %>
+    <%= f.text_field(:project_name, {:class => 'form-control', :placeholder => 'Enter Project Name'}) %>
+  </div><br>
+
+  <div class="actions">
+    <%= f.submit "Save", class: "btn btn-primary" %>
+  </div>
+
+<% end %>

@@ -12,35 +12,33 @@ class CustomersController < ApplicationController
     @customer = Customer.new
   end
 
-  def edit
-  end
-
   def create
     @customer = Customer.new(customer_params)
+    binding.pry
       if @customer.save
         redirect_to @customer
-        flash[:notice]= 'Customer was successfully created.'
+        flash[:success]= 'Customer was successfully created.'
       else
         render 'new'
       end
-    end
+  end
+
+  def edit
   end
 
   def update
-      if @customer.update(customer_params)
-        redirect_to @customer
-        flash[:notice] = 'Customer was successfully updated.'
-      else
-        render 'edit'
-      end
+    if @customer.update_attributes(customer_params)
+      flash[:success] = 'Customer was successfully updated.'
+      redirect_to @customer
+    else
+      render 'edit'
     end
   end
 
   def destroy
     @customer.destroy
-    redirect_to customers_url
-    flash[:notice] = 'Customer was successfully destroyed.'
-    end
+    flash[:success] = 'Customer was successfully destroyed.'
+    redirect_to customers_path
   end
 
   private
@@ -52,4 +50,5 @@ class CustomersController < ApplicationController
     def customer_params
       params.require(:customer).permit(:company, :address, :city, :state, :zip)
     end
+
 end

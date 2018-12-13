@@ -1,4 +1,3 @@
 class Customer < ApplicationRecord
-  has_many :projects
-  # or has_one :projects
+has_many :projects
 end
