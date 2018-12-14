@@ -1,5 +1,14 @@
-<h1>New Task</h1>
+<h1>New Project Task</h1>
 
-<%= render 'form', task: @task %>
+<%= form_for(@task, url: project_tasks_path, html: {class: "new_project_task", id: "new_project_task"}) do |f| %>
 
-<%= link_to 'Back', tasks_path %>
+  <div class="field">
+    <%= f.label :task_name %>
+    <%= f.text_field(:task_name, {:class => 'form-control', :placeholder => 'Enter Task Name'}) %>
+  </div><br>
+
+  <div class="actions">
+    <%= f.submit "Save", class: "btn btn-primary" %>
+  </div>
+
+<% end %>

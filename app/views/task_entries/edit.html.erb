@@ -1,6 +1,20 @@
 <h1>Editing Task Entry</h1>
 
-<%= render 'form', task_entry: @task_entry %>
+<%= form_for @task_entry do |f| %>
 
-<%= link_to 'Show', @task_entry %> |
-<%= link_to 'Back', task_entries_path %>
+  <div class="field">
+    <%= f.label :note %>
+    <%= f.text_field(:note, {:class => 'form-control', :placeholder => 'Enter Task'}) %>
+  </div><br>
+
+  <div class="field">
+    <%= f.label :duration %>
+    <%= f.number_field(:duration, {:class => 'form-control', :placeholder => 'Enter Task Name'}) %>
+  </div><br>
+
+
+  <div class="actions">
+    <%= f.submit "Save", class: "btn btn-primary" %>
+  </div>
+
+<% end %>

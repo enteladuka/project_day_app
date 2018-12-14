@@ -1,19 +1,4 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Note:</strong>
-  <%= @task_entry.note %>
-</p>
-
-<p>
-  <strong>Duration:</strong>
-  <%= @task_entry.duration %>
-</p>
-
-<p>
-  <strong>Task:</strong>
-  <%= @task_entry.task %>
-</p>
-
-<%= link_to 'Edit', edit_task_entry_path(@task_entry) %> |
-<%= link_to 'Back', task_entries_path %>
+Task entry note: <%= @task_entry.note %>
+<br>
+Task Project ID: <%= @task_entry.task_id %>
+<br>

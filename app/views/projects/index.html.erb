@@ -3,7 +3,7 @@
 <% @projects.each do |project| %>
 Project Name: <%= project.project_name %><br>
 Customer ID: <%= project.customer_id %><br>
-<%= link_to 'Show', customer_project_path(project.customer, project), :class => 'btn btn-light btn-sm'%><br>
-<%= link_to 'Edit', edit_customer_project_path(project.customer, project), :class => 'btn btn-light btn-sm'  %><br>
-<%= button_to 'Destroy', [project.customer, project], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
+<%= link_to 'Show', project_path(project), :class => 'btn btn-light btn-sm'%><br>
+<%= link_to 'Edit', edit_project_path(project), :class => 'btn btn-light btn-sm' %><br>
+<%= button_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
 <% end %>

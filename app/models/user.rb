@@ -6,10 +6,10 @@ class User < ApplicationRecord
 
   has_many :tasks
 
-  #VALID_USERNAME_REGEX = /\A\w\z/i # Proof: http://rubular.com/r/WplaODtchP.
+  VALID_USERNAME_REGEX = /\A[a-z0-9_]{4,30}\z/i
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 
-  before_save { self.email = email.downcase } # self is the current user
+  before_save { self.email = email.downcase }
   before_save { self.username = username.downcase }
 
   before_create :create_activation_digest
@@ -22,8 +22,8 @@ class User < ApplicationRecord
     end
   end
 
-  validates :username, presence: true, length: { in: 4..30 },
-                       #format: { with: VALID_USERNAME_REGEX },
+  validates :username, presence: true, length: { maximum: 30 },
+                       format: { with: VALID_USERNAME_REGEX },
                        uniqueness: { case_sensitive: false }
 
   validates :email, presence: true , length: { maximum: 255 },
@@ -33,9 +33,6 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 8 }, allow_nil: true
 
 
-  # def downcase_attributes(attrs = [])
-  #   attrs.each(&:downcase)
-  # end
 
   def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :

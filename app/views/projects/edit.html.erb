@@ -1,6 +1,6 @@
 <h1>Edit Project</h1>
 
-<%= form_for([@customer, @project], url: customer_project_path([@customer, @project]), html: {class: "edit_customer_project", id: "edit_customer_project", method: :patch}) do |f| %>
+<%= form_for @project do |f| %>
 
   <div class="field">
     <%= f.label :project_name %>

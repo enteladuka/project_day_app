@@ -6,5 +6,7 @@ class ApplicationController < ActionController::Base
     flash[:danger] = 'No page found at that address'
     redirect_to root_path
   end
-  
+
+  attr_reader :tasks
+
 end

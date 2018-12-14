@@ -1,9 +1,10 @@
 class TaskEntriesController < ApplicationController
-  before_action :set_task
   before_action :set_task_entry, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: [:new, :create]
+
 
   def index
-    @task_entries = TaskEntry.all
+    @task_entries = TaskEntry.where({:task_id => (params[:task_id])})
   end
 
   def show
@@ -17,10 +18,10 @@ class TaskEntriesController < ApplicationController
   end
 
   def create
-    @task_entry = @task.task_entries.create(task_entry_params)
-    if @task_entry.save
+    @task_entry = @task.task_entries.build(task_entry_params)
+    if @task_entry.save!
       flash[:success] = "Task entry was successfully created."
-      redirect_to @task
+      redirect_to task_task_entries_path
     else
       render 'new'
     end
@@ -36,13 +37,14 @@ class TaskEntriesController < ApplicationController
   end
 
   def destroy
-    @task_entry = @task.task_entries.find(params[:id])
+    @task = @task_entry.task_id
     if @task_entry.destroy
       flash[:success] = "Task entry was deleted."
+      redirect_to task_task_entries_path(@task)
     else
-      flash[:error] = "Task entry could not be deleted."
+      flash[:danger] = "Task entry could not be deleted."
+      redirect_to @task
     end
-    redirect_to @task
   end
 
   # def duration
@@ -58,7 +60,7 @@ class TaskEntriesController < ApplicationController
     end
 
     def set_task_entry
-      @task_entry = @task.task_entries.find(params[:id])
+      @task_entry = TaskEntry.find(params[:id])
     end
 
     def task_entry_params

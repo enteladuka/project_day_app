@@ -1,19 +1,8 @@
-<p id="notice"><%= notice %></p>
+Task name: <%= @task.task_name %>
+<br>
+Task Project ID <%= @task.project_id %>
+<br>
+Task User ID <%= @task.user_id %>
+<br>
 
-<p>
-  <strong>Task name:</strong>
-  <%= @task.task_name %>
-</p>
-
-<p>
-  <strong>Project:</strong>
-  <%= @task.project %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @task.user %>
-</p>
-
-<%= link_to 'Edit', edit_task_path(@task) %> |
-<%= link_to 'Back', tasks_path %>
+<%= link_to 'New Task Entry', new_task_task_entry_path(@task) %>

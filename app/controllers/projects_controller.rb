@@ -1,10 +1,9 @@
 class ProjectsController < ApplicationController
-  before_action :set_customer
   before_action :set_project, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_customer, only: [:new, :create]
 
   def index
-    @projects = Project.all
+    @projects = Project.where({:customer_id =>(params[:customer_id])})
   end
 
   def new
@@ -30,16 +29,17 @@ class ProjectsController < ApplicationController
   def update
     if @project.update(project_params)
       flash[:success] = "Project successfully updated!"
-      redirect_to customer_projects_path
+      redirect_to project_path
     else
       render 'edit'
     end
   end
 
   def destroy
+    @customer = @project.customer_id
     @project.destroy
     flash[:success] = 'Project was successfully destroyed'
-    redirect_to customer_path(@customer)
+    redirect_to customer_projects_path(@customer)
     end
   end
 
@@ -55,5 +55,5 @@ class ProjectsController < ApplicationController
     end
 
     def set_project
-      @project = @customer.projects.find(params[:id])
+      @project = Project.find(params[:id])
     end

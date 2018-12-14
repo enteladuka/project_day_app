@@ -1,5 +1,5 @@
 class Task < ApplicationRecord
+  attr_accessor :tasks
   belongs_to :project
-  belongs_to :user
-  has_many :task_entries 
+  has_many :task_entries
 end
