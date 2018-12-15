@@ -35,9 +35,12 @@ class CustomersController < ApplicationController
   end
 
   def destroy
-    @customer.destroy
+    if @customer.destroy
     flash[:success] = 'Customer was successfully destroyed.'
     redirect_to customers_path
+    else
+      render 'edit'
+    end
   end
 
   private

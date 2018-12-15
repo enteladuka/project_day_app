@@ -2,6 +2,7 @@
 
 <div>
 <%= form_for(@customer, as: :customer, url: customer_path(@customer), html: {class: "edit_customer", id: "edit_customer", method: :patch}) do |f| %>
+
   <div class="field">
     <%= f.label :company %><br/>
     <%= f.text_field(:company, {:class => 'form-control', :placeholder => 'Enter Company'}) %>

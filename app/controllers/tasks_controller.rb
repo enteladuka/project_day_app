@@ -1,6 +1,5 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
-  #before_action :find_project, only: [:create, :show, :edit, :update, :destroy]
   before_action :set_project, only: [:new, :create]
 
   def index
@@ -18,8 +17,8 @@ class TasksController < ApplicationController
   end
 
   def create
-    :user_id == current_user.id
     @task = @project.tasks.build(task_params)
+    @task.user_id = current_user.id
     if @task.save!
       #assign_user
       flash[:success] = "Task created!"
@@ -50,10 +49,6 @@ class TasksController < ApplicationController
     def task_params
       params.require(:task).permit(:task_name, :user_id)
     end
-
-    # def assign_user
-    #   @task.update_attributes(:user_id => current_user.id)
-    # end
 
     def set_project
       @project = Project.find(params[:project_id])
