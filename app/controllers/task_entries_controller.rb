@@ -1,6 +1,7 @@
 class TaskEntriesController < ApplicationController
   before_action :set_task_entry, only: [:show, :edit, :update, :destroy]
   before_action :set_task, only: [:new, :create]
+  before_action :logged_in_user
 
 
   def index
@@ -8,6 +9,7 @@ class TaskEntriesController < ApplicationController
   end
 
   def show
+    return not_found if some_condition
   end
 
   def new
@@ -60,4 +62,12 @@ class TaskEntriesController < ApplicationController
     def task_entry_params
       params.require(:task_entry).permit(:note)
     end
+
+    def logged_in_user
+      unless logged_in?
+        flash[:info] = "Please log in to continue"
+        redirect_to login_url
+      end
+    end
+
 end

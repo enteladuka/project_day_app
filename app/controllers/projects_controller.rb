@@ -1,6 +1,7 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:edit, :show, :update, :destroy]
   before_action :set_customer, only: [:new, :create]
+  before_action :logged_in_user
 
   def index
     @projects = Project.where({:customer_id =>(params[:customer_id])})
@@ -57,3 +58,12 @@ class ProjectsController < ApplicationController
     def set_project
       @project = Project.find(params[:id])
     end
+
+    def logged_in_user
+      unless logged_in?
+        flash[:info] = "Please log in to continue"
+        redirect_to login_url
+      end
+    end
+
+  end

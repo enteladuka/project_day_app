@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
+before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy]
 
   def index
     @users = User.where(activated: true)
@@ -41,6 +41,7 @@ before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
   def destroy
     if @user = current_user
       User.find(params[:id]).destroy
+      flash[:success] = "Your account has been deleted!"
       redirect_to root_url
     else
       flash[:alert] = "User could not be destroyed"

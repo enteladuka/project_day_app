@@ -4,16 +4,13 @@ class ApplicationController < ActionController::Base
   include StatesHelper
   include DisplayErrorHelper
 
+  def not_found
+    raise ActionController::RoutingError.new('Not Found')
+  end
+
   def index
     flash[:danger] = 'No page found at that address'
     redirect_to root_path
-  end
-
-  def set_admin_only
-    role = current_user.role
-    unless role == "admin"
-      flash[:danger] = 'You are not authorized to perform this action'
-    end
   end
 
 end

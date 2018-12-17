@@ -1,5 +1,6 @@
 class CustomersController < ApplicationController
   before_action :set_customer, only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user
   #before_action :set_admin_only
 
   def index
@@ -7,6 +8,7 @@ class CustomersController < ApplicationController
   end
 
   def show
+    return not_found if some_condition
   end
 
   def new
@@ -60,4 +62,12 @@ class CustomersController < ApplicationController
         redirect_to customers_path
       end
     end
+
+    def logged_in_user
+      unless logged_in?
+        flash[:info] = "Please log in to continue"
+        redirect_to login_url
+      end
+    end
+
 end
