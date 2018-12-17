@@ -1,40 +1,5 @@
 <h1>Editing Customer</h1>
 
 <div>
-<%= form_for(@customer, as: :customer, url: customer_path(@customer), html: {class: "edit_customer", id: "edit_customer", method: :patch}) do |f| %>
-
-  <div class="field">
-    <%= f.label :company %><br/>
-    <%= f.text_field(:company, {:class => 'form-control', :placeholder => 'Enter Company'}) %>
-  </div>
-
-  <div class="field">
-    <%= f.label :address %>
-    <%= f.text_field(:address, {:class => 'form-control', :placeholder => 'Enter Address'}) %>
-  </div>
-
-  <div class ="field">
-    <%= f.label :city %>
-    <%= f.text_field(:city, {:class => 'form-control', :placeholder => 'Enter City'}) %>
-  </div>
-
-  <div class ="field">
-    <%= f.label :state %>
-    <%= f.text_field(:state, {:class => 'form-control', :placeholder => 'Enter State'}) %>
-  </div>
-
-  <div class ="field">
-    <%= f.label :zip %>
-    <%= f.text_field(:zip, {:class => 'form-control', :placeholder => 'Enter Zip'}) %>
-  </div><br>
-
-  <div class="actions">
-  <%= f.submit "Update", class: "btn btn-primary" %>
-  </div>
-<% end %>
+<%= render "edit_form" %>
 </div>
-
-<br>
-<%= button_to 'Destroy', @customer, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
-<%= link_to 'Show', @customer %> |
-<%= link_to 'Back', customers_path %>

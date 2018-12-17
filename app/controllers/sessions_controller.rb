@@ -7,14 +7,15 @@ class SessionsController < ApplicationController
 
   def create
     @user = User.find_by(username: params[:session][:username])
-   if @user && @user.authenticate(params[:session][:password])
+    if @user && @user.authenticate(params[:session][:password])
      if @user.activated?
        log_in @user
        params[:session][:remember_me] == '1' ? remember(@user) : forget(@user)
        redirect_to user_path(@user)
      else
-       message  = "Account not activated. "
+       message  = "Account not activated."
        message += "Check your email for the activation link."
+       @user.send_activation_email
        flash[:warning] = message
        redirect_to root_url
      end
@@ -28,4 +29,5 @@ class SessionsController < ApplicationController
     log_out if logged_in?
     redirect_to root_url
   end
+  
 end

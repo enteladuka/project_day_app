@@ -6,8 +6,11 @@ class User < ApplicationRecord
 
   has_many :tasks
 
-  VALID_USERNAME_REGEX = /\A[a-z0-9_]{4,30}\z/i
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+  VALID_USERNAME_REGEX = /\A[a-z0-9_]{4,30}\z/i #Proof: http://rubular.com/r/sbksBXvw1m
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i #Proof: http://rubular.com/r/xoymCqX7D2
+  INVALID_PASSWORD_REGEX =/\A(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*|[^\s]*\s.*)\z/ #Proof: http://rubular.com/r/u51mrd016F
+
+  #Invalid password is anything with less than eight characters OR anything with no numbers OR anything with no uppercase OR or anything with no lowercase OR anything with no special characters.
 
   before_save { self.email = email.downcase }
   before_save { self.username = username.downcase }
@@ -22,15 +25,19 @@ class User < ApplicationRecord
     end
   end
 
-  validates :username, presence: true, length: { maximum: 30 },
-                       format: { with: VALID_USERNAME_REGEX },
+  validates :username, presence: true,
+                       format: { with: VALID_USERNAME_REGEX,
+                       message: "must only contain letters 'A-Z', numbers '0-9', and underscores '_'"},
                        uniqueness: { case_sensitive: false }
 
   validates :email, presence: true , length: { maximum: 255 },
-                    format: { with: VALID_EMAIL_REGEX },
+                    format: { with: VALID_EMAIL_REGEX , message: "must use a valid format such as 'example@email.com'"},
                     uniqueness: { case_sensitive: false }
 
-  validates :password, presence: true, length: { minimum: 8 }, allow_nil: true
+  validates :password, presence: true, allow_nil: true,
+                       format: { without: INVALID_PASSWORD_REGEX, message: "must contain at least 8 characters, 1 number, 1 uppercase letter, 1 lower case letter, and 1 special character"}
+
+  #validates :password_confirmation, allow_nil: true
 
 
 
@@ -40,7 +47,7 @@ class User < ApplicationRecord
     BCrypt::Password.create(string, cost: cost)
   end
 
-  def new_token
+  def self.new_token
     SecureRandom.urlsafe_base64
   end
 
@@ -55,20 +62,20 @@ class User < ApplicationRecord
     BCrypt::Password.new(digest).is_password?(token)
   end
 
-  def forget #forgets the user
+  def forget
     update_attribute(:remember_digest, nil)
   end
 
-  def activate #activates an account
+  def activate
     update_attribute(:activated, true)
     update_attribute(:activated_at, Time.zone.now)
   end
 
-  def send_activation_email #sends activation email
+  def send_activation_email
     UserMailer.account_activation(self).deliver_now
   end
 
-  def create_reset_digest #sets password reset attributes
+  def create_reset_digest
     self.reset_token = new_token
     update_attribute(:reset_digest,  User.digest(reset_token))
     update_attribute(:reset_sent_at, Time.zone.now)
@@ -78,13 +85,13 @@ class User < ApplicationRecord
     UserMailer.password_reset(self).deliver_now
   end
 
-  def password_reset_expired? #returns true if password expired
+  def password_reset_expired?
     reset_sent_at < 2.hours.ago
   end
 
   private
 
-  def create_activation_digest #creates and assigns the activation token and digest
+  def create_activation_digest
     self.activation_token = new_token
     self.activation_digest = User.digest(activation_token)
   end

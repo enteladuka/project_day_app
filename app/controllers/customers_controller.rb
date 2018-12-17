@@ -1,5 +1,6 @@
 class CustomersController < ApplicationController
   before_action :set_customer, only: [:show, :edit, :update, :destroy]
+  #before_action :set_admin_only
 
   def index
     @customers = Customer.all
@@ -53,4 +54,10 @@ class CustomersController < ApplicationController
       params.require(:customer).permit(:company, :address, :city, :state, :zip)
     end
 
+    def set_admin_only
+      unless current_user.role == "admin"
+        flash[:danger] = 'You are not authorized to perform this action'
+        redirect_to customers_path
+      end
+    end
 end

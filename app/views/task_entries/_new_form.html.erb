@@ -1,0 +1,18 @@
+<%= form_for(@task_entry, url: task_task_entries_path, html: {class: "new_task_task_entry", id: "new_task_task_entry"}) do |f| %>
+
+  <div class="field">
+    <%= f.label :note %>
+    <%= f.text_field(:note, {:class => 'form-control', :placeholder => 'Enter note'}) %>
+  </div><br>
+
+  <div class="field">
+    <%= f.label :duration %>
+    <%= f.number_field(:duration, {:class => 'form-control', :placeholder => 'Enter duration'}) %>
+  </div><br>
+
+
+  <div class="actions">
+    <%= f.submit "Save", class: "btn btn-primary" %>
+  </div>
+
+<% end %>

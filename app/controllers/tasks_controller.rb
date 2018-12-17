@@ -20,7 +20,6 @@ class TasksController < ApplicationController
     @task = @project.tasks.build(task_params)
     @task.user_id = current_user.id
     if @task.save!
-      #assign_user
       flash[:success] = "Task created!"
       redirect_to project_tasks_path
     else

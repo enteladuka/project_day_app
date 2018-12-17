@@ -47,12 +47,6 @@ class TaskEntriesController < ApplicationController
     end
   end
 
-  # def duration
-  #   duration = (Time.now - task_item.created_at).to_i
-  #   @task_item.update_attribute(:duration, duration)
-  #   flash[:success] = "Task entry completed."
-  # end
-
   private
 
     def set_task

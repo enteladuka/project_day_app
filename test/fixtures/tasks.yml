@@ -3,9 +3,9 @@
 one:
   task_name: MyString
   project: one
-  user: one
+  user_id: one
 
 two:
   task_name: MyString
   project: two
-  user: two
+  user_id: two

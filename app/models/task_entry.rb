@@ -1,7 +1,8 @@
 class TaskEntry < ApplicationRecord
   belongs_to :task
 
-
+  #possible validation for task duration, checks to see if it is an integer before saving, otherwise tries to convert using Float
+  #validates :duration, numericality: { only_integer: true } 
 
   def time_lapsed
     duration = (Time.now - task_entry.created_at).to_i

@@ -20,7 +20,6 @@ before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
       flash[:info] = "Please check your email to activate your account."
       redirect_to login_path
     else
-      #flash[:info] = "something went wrong"
       render 'new'
     end
   end
@@ -32,6 +31,7 @@ before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
   def update
     @user = current_user
     if @user.update_attributes(user_params)
+      flash[:success] = "Your new preferences have been saved!"
       redirect_to user_path(@user)
     else
       render 'edit'
@@ -43,7 +43,7 @@ before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
       User.find(params[:id]).destroy
       redirect_to root_url
     else
-      flash[:alert] = "something went wrong"
+      flash[:alert] = "User could not be destroyed"
     end
   end
 

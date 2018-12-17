@@ -1,0 +1,44 @@
+<%= form_for(@user) do |f| %>
+  <div class="field">
+    <%= f.label :username %>
+    <%= f.text_field(:username, {:class => 'form-control', :placeholder => 'Enter Username'}) %>
+  </div>
+
+    <%= display_error(@user, :username) %>
+
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field(:email, {:class => 'form-control', :placeholder => 'Enter Email'}) %>
+  </div>
+
+    <%= display_error(@user, :email) %>
+
+  <div class ="field">
+    <%= f.label :password %>
+    <%= f.password_field(:password, {:class => 'form-control', :placeholder => 'Enter Password'}) %>
+  </div>
+
+    <%= display_error(@user, :password) %>
+
+  <div class = "field">
+    <%= f.label :password_confirmation %>
+    <%= f.password_field(:password_confirmation, {:class => 'form-control', :placeholder => 'Confirm Password'}) %>
+  </div>
+
+    <%= display_error(@user, :password_confirmation) %>
+
+  <div class="field">
+    <%= f.label :Admin %>
+    <%= f.check_box :role, {:type => 'checkbox'}, "admin", "standard" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Save Preferences", class: "btn btn-light btn-sm btn-block" %>
+  </div>
+
+  <div class="actions">
+  <%= link_to "Delete Account", user_path , method: :delete,
+                                            data: { confirm: "Are you sure?" },
+                                            class: "btn btn-danger btn-sm btn-block" %>
+  </div>
+<% end %>

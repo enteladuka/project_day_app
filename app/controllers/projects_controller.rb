@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
 
   def create
     @project = @customer.projects.build(project_params)
-    if @project.save!
+    if @project.save
       flash[:success] = "Project created!"
       redirect_to customer_projects_path
     else
@@ -37,7 +37,7 @@ class ProjectsController < ApplicationController
 
   def destroy
     @customer = @project.customer_id
-    @project.destroy
+    if @project.destroy
     flash[:success] = 'Project was successfully destroyed'
     redirect_to customer_projects_path(@customer)
     end

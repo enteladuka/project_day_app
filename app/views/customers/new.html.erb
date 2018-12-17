@@ -1,36 +1,5 @@
 <h1>New Customer</h1>
 
 <div>
-<%= form_for(@customer, as: :customer, url: customers_path, html: {class: "new_customer", id: "new_customer"}) do |f| %>
-  <div class="field">
-    <%= f.label :company %><br/>
-    <%= f.text_field(:company, {:class => 'form-control', :placeholder => 'Enter Company'}) %>
-  </div>
-
-  <div class="field">
-    <%= f.label :address %>
-    <%= f.text_field(:address, {:class => 'form-control', :placeholder => 'Enter Address'}) %>
-  </div>
-
-  <div class ="field">
-    <%= f.label :city %>
-    <%= f.text_field(:city, {:class => 'form-control', :placeholder => 'Enter City'}) %>
-  </div>
-
-  <div class ="field">
-    <%= f.label :state %>
-    <%= f.text_field(:state, {:class => 'form-control', :placeholder => 'Enter State'}) %>
-  </div>
-
-  <div class ="field">
-    <%= f.label :zip %>
-    <%= f.text_field(:zip, {:class => 'form-control', :placeholder => 'Enter Zip'}) %>
-  </div><br>
-
-  <div class="actions">
-  <%= f.submit "Save", class: "btn btn-primary" %>
-  </div>
-<% end %>
+<%= render "new_form" %>
 </div>
-
-<%= link_to 'Back', customers_path %>

@@ -1,31 +1,47 @@
-<p id="notice"><%= notice %></p>
+<h3><%= @customer.company %> Projects</h3>
+<i class="fas fa-plus"></i><%= link_to 'New Project', new_customer_project_path(@customer) %>
 
-<p>
-  <strong>Company:</strong>
-  <%= @customer.company %>
-</p>
+<table class="table table-hover table-sm">
+  <thead>
+    <tr>
+      <th scope="col">Company</th>
+      <th scope="col">Address</th>
+      <th scope="col">City</th>
+      <th scope="col">State</th>
+      <th scope="col">Zip</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+   </tr>
+  </thead>
+<tbody>
+  <tr>
+    <th scope="row"><%= @customer.company %></th>
+    <td><%= @customer.address %></td>
+    <td><%= @customer.city %></td>
+    <td><%= @customer.state %></td>
+    <td><%= @customer.zip %></td>
+  </tr>
+</tbody>
 
-<p>
-  <strong>Address:</strong>
-  <%= @customer.address %>
-</p>
-
-<p>
-  <strong>City:</strong>
-  <%= @customer.city %>
-</p>
-
-<p>
-  <strong>State:</strong>
-  <%= @customer.state %>
-</p>
-
-<p>
-  <strong>Zip:</strong>
-  <%= @customer.zip %>
-</p>
-
-<%= link_to 'New Project', new_customer_project_path(@customer) %> |
-
-<%= link_to 'Edit', edit_customer_path(@customer) %> |
-<%= link_to 'Back', customers_path %>
+<table class="table table-hover table-sm">
+  <thead>
+    <tr>
+      <th scope="col" class="col-sm-2">Project</th>
+      <th scope="col" class="col-sm-1"></th>
+   </tr>
+  </thead>
+  <tbody>
+    <% @customer.projects.order(created_at: :desc).each do |project| %>
+      <tr>
+        <td><%= project.project_name %></td>
+        <td><div><button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" <%= link_to "Show",project_path(project)%></a>
+              <a class="dropdown-item" <%= link_to "Edit",edit_project_path(project)%></a>
+            </div>
+          </div>
+        </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

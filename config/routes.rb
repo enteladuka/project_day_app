@@ -9,7 +9,9 @@ Rails.application.routes.draw do
   get 'account/Activations'
 
   get 'home', to: 'static_pages#home'
+
   get 'projects', to: 'static_pages#projects'
+
   get 'tasks', to: 'static_pages#tasks'
 
   get '/signup', to: 'users#new'

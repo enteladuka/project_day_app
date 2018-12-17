@@ -1,0 +1,18 @@
+<%= form_for @task_entry do |f| %>
+
+  <div class="field">
+    <%= f.label :note %>
+    <%= f.text_field(:note, {:class => 'form-control', :placeholder => 'Enter Task'}) %>
+  </div><br>
+
+  <div class="field">
+    <%= f.label :duration %>
+    <%= f.number_field(:duration, {:class => 'form-control', :placeholder => 'Enter Task Name'}) %>
+  </div><br>
+
+
+  <div class="actions">
+    <%= f.submit "Save", class: "btn btn-primary" %>
+  </div>
+
+<% end %>
